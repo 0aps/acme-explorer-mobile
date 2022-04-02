@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Acme Explorer</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="header_filters">Filters</string>
+    <string name="price_filters">Price</string>
+    <string name="title_filters">Title</string>
 </resources>

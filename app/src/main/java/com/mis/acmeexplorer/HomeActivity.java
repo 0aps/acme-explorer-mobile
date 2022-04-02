@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +18,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mis.acmeexplorer.trips.FilterDialogFragment;
+import com.mis.acmeexplorer.trips.Filters;
 import com.mis.acmeexplorer.trips.Trip;
 import com.mis.acmeexplorer.trips.TripService;
 import com.mis.acmeexplorer.trips.TripsAdapter;
@@ -26,15 +27,18 @@ import com.mis.acmeexplorer.trips.TripsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
-    final Context self = this;
+public class HomeActivity extends AppCompatActivity implements
+        FilterDialogFragment.FilterListener {
     private TripService tripService;
+    private FilterDialogFragment mFilterDialog;
+    private Filters mFilters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        mFilterDialog = new FilterDialogFragment();
         tripService = new TripService(FirebaseFirestore.getInstance());
         loadTrips();
     }
@@ -50,7 +54,12 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
             this.logout();
+        } else if (item.getItemId() == R.id.action_show_filters) {
+            this.showFilterDialog();
+        } else if (item.getItemId() == R.id.action_clear_filters) {
+            this.clearFilters();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -64,6 +73,10 @@ public class HomeActivity extends AppCompatActivity {
                 });
     }
 
+    private void showMessage(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
     private void loadTrips() {
         tripService.loadTrips().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -74,9 +87,7 @@ public class HomeActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),
-                        "Error loading trips. Please verify. " + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                showMessage("Error loading trips. Please verify. " + e.getMessage());
             }
         });
     }
@@ -87,5 +98,24 @@ public class HomeActivity extends AppCompatActivity {
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    public void showFilterDialog() {
+        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
+    }
+
+    public void clearFilters() {
+        mFilterDialog.resetFilters();
+
+        onFilter(new Filters());
+    }
+
+    @Override
+    public void onFilter(Filters filters) {
+        // TODO(developer): Construct new query
+
+        showMessage("Filters applied");
+        mFilters = filters;
+    }
+
 
 }
