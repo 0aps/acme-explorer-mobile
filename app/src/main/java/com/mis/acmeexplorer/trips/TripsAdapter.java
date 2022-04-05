@@ -16,22 +16,16 @@ import java.util.List;
 public class TripsAdapter extends
         RecyclerView.Adapter<TripsAdapter.ViewHolder> {
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView titleTextView;
-        public TextView descriptionTextView;
+    final private List<Trip> trips;
+    final private OnItemClickListener itemListener;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            titleTextView = itemView.findViewById(R.id.trip_title);
-            descriptionTextView = itemView.findViewById(R.id.trip_description);
-        }
+    public TripsAdapter(List<Trip> trips, OnItemClickListener itemListener) {
+        this.trips = trips;
+        this.itemListener = itemListener;
     }
 
-    private List<Trip> trips;
-
-    public TripsAdapter(List<Trip> $trips) {
-        trips = $trips;
+    public interface OnItemClickListener {
+        void onItemClick(Trip trip);
     }
 
     @NonNull
@@ -49,10 +43,30 @@ public class TripsAdapter extends
 
         holder.titleTextView.setText(trip.getTitle());
         holder.descriptionTextView.setText(trip.getDescription());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemListener.onItemClick(trip);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return trips.size();
     }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView titleTextView;
+        public TextView descriptionTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            titleTextView = itemView.findViewById(R.id.trip_title);
+            descriptionTextView = itemView.findViewById(R.id.trip_description);
+        }
+    }
+
 }

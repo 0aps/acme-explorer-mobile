@@ -1,8 +1,9 @@
 package com.mis.acmeexplorer.trips;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Trip {
+public class Trip implements Serializable {
 
     private String ticker;
 

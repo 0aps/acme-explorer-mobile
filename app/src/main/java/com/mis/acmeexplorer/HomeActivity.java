@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mis.acmeexplorer.trips.FilterDialogFragment;
 import com.mis.acmeexplorer.trips.Filters;
 import com.mis.acmeexplorer.trips.Trip;
+import com.mis.acmeexplorer.trips.TripActivity;
 import com.mis.acmeexplorer.trips.TripService;
 import com.mis.acmeexplorer.trips.TripsAdapter;
 
@@ -63,6 +65,14 @@ public class HomeActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFilter(Filters filters) {
+        // TODO(developer): Construct new query
+
+        showMessage("Filters applied");
+        mFilters = filters;
+    }
+
     public void logout() {
         AuthUI.getInstance()
                 .signOut(this)
@@ -71,6 +81,16 @@ public class HomeActivity extends AppCompatActivity implements
                         finish();
                     }
                 });
+    }
+
+    public void showFilterDialog() {
+        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
+    }
+
+    public void clearFilters() {
+        mFilterDialog.resetFilters();
+
+        onFilter(new Filters());
     }
 
     private void showMessage(String message) {
@@ -94,28 +114,20 @@ public class HomeActivity extends AppCompatActivity implements
 
     private void displayTrips(ArrayList<Trip> trips) {
         RecyclerView rvContacts = findViewById(R.id.rvTrips);
-        TripsAdapter adapter = new TripsAdapter(trips);
+        TripsAdapter adapter = new TripsAdapter(trips, new TripsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Trip trip) {
+                onTripClicked(trip);
+            }
+        });
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void showFilterDialog() {
-        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
+    private void onTripClicked(Trip trip) {
+        Intent intent = new Intent(this, TripActivity.class);
+        intent.putExtra("trip", trip);
+        startActivity(intent);
     }
-
-    public void clearFilters() {
-        mFilterDialog.resetFilters();
-
-        onFilter(new Filters());
-    }
-
-    @Override
-    public void onFilter(Filters filters) {
-        // TODO(developer): Construct new query
-
-        showMessage("Filters applied");
-        mFilters = filters;
-    }
-
 
 }
