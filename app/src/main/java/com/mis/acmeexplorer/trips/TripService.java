@@ -5,6 +5,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import javax.annotation.Nullable;
+
 public class TripService {
 
     final private FirebaseFirestore db;
@@ -13,10 +15,28 @@ public class TripService {
         this.db = db;
     }
 
-    public Task<QuerySnapshot> loadTrips() {
-        Query mQuery = db.collection("trips")
+    public Task<QuerySnapshot> loadTrips(@Nullable Filters filters) {
+        Query query = db.collection("trips")
                 .orderBy("startDate", Query.Direction.DESCENDING);
 
-        return mQuery.get();
+        if (filters != null) {
+            if (filters.hasTitle()) {
+                query = query.whereEqualTo("title", filters.getTitle());
+            }
+            if (filters.hasMinPrice()) {
+                query = query.whereGreaterThanOrEqualTo("price", filters.getMinPrice());
+            }
+            if (filters.hasMaxPrice()) {
+                query = query.whereLessThanOrEqualTo("price", filters.getMaxPrice());
+            }
+            if (filters.hasMinDate()) {
+                query = query.whereGreaterThanOrEqualTo("startDate", filters.getMinDate());
+            }
+            if (filters.hasMaxDate()) {
+                query = query.whereLessThanOrEqualTo("endDate", filters.getMaxDate());
+            }
+        }
+
+        return query.get();
     }
 }

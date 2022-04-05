@@ -18,5 +18,7 @@ public class TripActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         trip = (Trip) intent.getSerializableExtra("trip");
+
+        setTitle(trip.getTitle());
     }
 }

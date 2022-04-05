@@ -3,6 +3,9 @@
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
     <string name="header_filters">Filters</string>
-    <string name="price_filters">Price</string>
+    <string name="min_price_filters">Min Price</string>
+    <string name="max_price_filters">Max Price</string>
     <string name="title_filters">Title</string>
+    <string name="input_min_date">Min Date</string>
+    <string name="input_max_date">Max Date</string>
 </resources>

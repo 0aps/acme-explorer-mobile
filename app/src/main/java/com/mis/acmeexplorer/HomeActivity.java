@@ -33,7 +33,6 @@ public class HomeActivity extends AppCompatActivity implements
         FilterDialogFragment.FilterListener {
     private TripService tripService;
     private FilterDialogFragment mFilterDialog;
-    private Filters mFilters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         mFilterDialog = new FilterDialogFragment();
         tripService = new TripService(FirebaseFirestore.getInstance());
-        loadTrips();
+        loadTrips(null);
     }
 
     @Override
@@ -67,10 +66,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onFilter(Filters filters) {
-        // TODO(developer): Construct new query
-
-        showMessage("Filters applied");
-        mFilters = filters;
+        loadTrips(filters);
     }
 
     public void logout() {
@@ -97,12 +93,13 @@ public class HomeActivity extends AppCompatActivity implements
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
-    private void loadTrips() {
-        tripService.loadTrips().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    private void loadTrips(Filters filters) {
+        tripService.loadTrips(filters).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot documentSnapshots) {
                 List<Trip> types = documentSnapshots.toObjects(Trip.class);
                 displayTrips(new ArrayList<>(types));
+                showMessage(types.size() + " trips loaded successfully");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

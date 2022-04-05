@@ -28,18 +28,69 @@
 
     </RelativeLayout>
 
-    <!-- Price -->
+    <!-- Min Price -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/input_price"
+            android:id="@+id/input_min_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:hint="@string/price_filters"
+            android:hint="@string/min_price_filters"
             android:inputType="number" />
+
+    </RelativeLayout>
+
+    <!-- Max Price -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_max_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:hint="@string/max_price_filters"
+            android:inputType="number" />
+
+    </RelativeLayout>
+
+    <!-- Min Date -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_min_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:focusable="false"
+            android:clickable="true"
+            android:hint="@string/input_min_date"
+            android:inputType="date"
+            android:maxLines="1" />
+
+    </RelativeLayout>
+
+    <!-- Max Date -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_max_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:focusable="false"
+            android:clickable="true"
+            android:hint="@string/input_max_date"
+            android:inputType="date"
+            android:maxLines="1" />
 
     </RelativeLayout>
 
