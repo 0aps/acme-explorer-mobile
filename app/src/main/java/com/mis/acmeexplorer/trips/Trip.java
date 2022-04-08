@@ -13,6 +13,8 @@ public class Trip implements Serializable {
 
     private String state;
 
+    private String picture;
+
     private double price;
 
     private Date startDate;
@@ -22,12 +24,13 @@ public class Trip implements Serializable {
     public Trip() {
     }
 
-    public Trip(String ticker, String description, String title, String state, double price,
+    public Trip(String ticker, String description, String title, String state, String picture, double price,
                 Date startDate, Date endDate) {
         this.ticker = ticker;
         this.description = description;
         this.title = title;
         this.state = state;
+        this.picture = picture;
         this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -89,4 +92,11 @@ public class Trip implements Serializable {
         this.endDate = endDate;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 }

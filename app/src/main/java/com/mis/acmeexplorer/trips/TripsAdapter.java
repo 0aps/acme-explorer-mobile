@@ -4,12 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mis.acmeexplorer.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class TripsAdapter extends
 
         holder.titleTextView.setText(trip.getTitle());
         holder.descriptionTextView.setText(trip.getDescription());
+        Picasso.get().load(trip.getPicture()).into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +63,14 @@ public class TripsAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView descriptionTextView;
+        public ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             titleTextView = itemView.findViewById(R.id.trip_title);
             descriptionTextView = itemView.findViewById(R.id.trip_description);
+            imageView = itemView.findViewById(R.id.trip_picture);
         }
     }
 

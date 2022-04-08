@@ -7,6 +7,7 @@ import androidx.core.splashscreen.SplashScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
