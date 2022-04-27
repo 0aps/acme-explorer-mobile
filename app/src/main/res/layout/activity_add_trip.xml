@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/filters_form"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".trips.AddTripActivity">
+
+    <!-- Title -->
+    <EditText
+        android:id="@+id/input_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/title_filters"
+        android:inputType="text" />
+
+    <!-- Description -->
+    <EditText
+        android:id="@+id/input_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/description"
+        android:inputType="text" />
+
+    <!-- Price -->
+    <EditText
+        android:id="@+id/input_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/price"
+        android:inputType="number" />
+
+    <!-- Start Date -->
+    <EditText
+        android:id="@+id/trip_start_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:clickable="true"
+        android:focusable="false"
+        android:hint="@string/start_date"
+        android:inputType="date"
+        android:maxLines="1" />
+
+    <!-- End Date -->
+    <EditText
+        android:id="@+id/trip_end_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:clickable="true"
+        android:focusable="false"
+        android:hint="@string/end_date"
+        android:inputType="date"
+        android:maxLines="1" />
+
+    <!-- Floating Action -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_save_trip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end|bottom"
+            android:contentDescription="@string/action_save_trip"
+            android:onClick="onSaveTrip"
+            android:src="@android:drawable/ic_menu_save" />
+
+    </RelativeLayout>
+
+</LinearLayout>

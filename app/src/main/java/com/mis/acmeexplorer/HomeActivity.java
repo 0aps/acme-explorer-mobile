@@ -1,5 +1,9 @@
 package com.mis.acmeexplorer;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,11 +13,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -24,6 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mis.acmeexplorer.trips.AddTripActivity;
 import com.mis.acmeexplorer.trips.FilterDialogFragment;
 import com.mis.acmeexplorer.trips.Filters;
 import com.mis.acmeexplorer.trips.Trip;
@@ -40,22 +47,23 @@ public class HomeActivity extends AppCompatActivity implements
     private TripService tripService;
     private FilterDialogFragment mFilterDialog;
 
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        loadTrips(null);
+                    }
+                }
+            });
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+        setNavigation();
 
         mFilterDialog = new FilterDialogFragment();
         tripService = new TripService(FirebaseFirestore.getInstance());
@@ -143,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     private void displayTrips(ArrayList<Trip> trips) {
-        RecyclerView rvContacts = findViewById(R.id.rvTrips);
+        RecyclerView rvContacts = findViewById(R.id.rv_trips);
         TripsAdapter adapter = new TripsAdapter(trips, new TripsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Trip trip) {
@@ -158,6 +166,25 @@ public class HomeActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, TripActivity.class);
         intent.putExtra("trip", trip);
         startActivity(intent);
+    }
+
+    public void onAddTrip(View view) {
+        Intent homeIntent = new Intent(this, AddTripActivity.class);
+        activityResultLauncher.launch(homeIntent);
+    }
+
+    private void setNavigation() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
     }
 
 }

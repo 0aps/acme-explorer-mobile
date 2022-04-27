@@ -9,10 +9,14 @@
     <string name="input_min_date">Min Date</string>
     <string name="input_max_date">Max Date</string>
     <string name="picture_of_image">Picture of image</string>
+    <string name="ticker">Ticker</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="price">Price</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="action_add_trip">Add trip</string>
+    <string name="action_save_trip">Save trip</string>
 </resources>

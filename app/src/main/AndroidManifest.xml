@@ -13,6 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AcmeExplorer">
         <activity
+            android:name=".trips.AddTripActivity"
+            android:exported="false"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+        <activity
             android:name=".maps.MapActivity"
             android:exported="false" />
         <activity
@@ -25,7 +33,8 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.AcmeExplorer.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

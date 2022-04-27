@@ -1,6 +1,7 @@
 package com.mis.acmeexplorer.trips;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,5 +39,9 @@ public class TripService {
         }
 
         return query.get();
+    }
+
+    public Task<DocumentReference> addTrip(Trip newTrip) {
+        return db.collection("trips").add(newTrip);
     }
 }

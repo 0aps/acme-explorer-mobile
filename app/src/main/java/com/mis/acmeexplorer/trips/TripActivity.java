@@ -38,7 +38,7 @@ public class TripActivity extends AppCompatActivity {
         tickerTextView.setText(trip.getTicker());
         titleTextView.setText(trip.getTitle());
         descriptionTextView.setText(trip.getDescription());
-        priceTextView.setText(String.format(Locale.ENGLISH, "%.2f", trip.getPrice()));
+        priceTextView.setText(trip.getPriceString());
         startDateTextView.setText(formatter.format(trip.getStartDate()));
         endDateTextView.setText(formatter.format(trip.getEndDate()));
         Picasso.get().load(trip.getPicture()).into(imageView);

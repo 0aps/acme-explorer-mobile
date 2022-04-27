@@ -2,6 +2,7 @@ package com.mis.acmeexplorer.trips;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 
 public class Trip implements Serializable {
 
@@ -70,6 +71,10 @@ public class Trip implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+
+    public String getPriceString() {
+        return String.format(Locale.ENGLISH, "%.2f", this.getPrice());
     }
 
     public void setPrice(double price) {

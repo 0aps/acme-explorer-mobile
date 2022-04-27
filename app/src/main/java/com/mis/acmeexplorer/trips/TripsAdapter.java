@@ -45,6 +45,7 @@ public class TripsAdapter extends
 
         holder.titleTextView.setText(trip.getTitle());
         holder.descriptionTextView.setText(trip.getDescription());
+        holder.priceTextView.setText(trip.getPriceString());
         Picasso.get().load(trip.getPicture()).into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +64,7 @@ public class TripsAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView descriptionTextView;
+        public TextView priceTextView;
         public ImageView imageView;
 
         public ViewHolder(View itemView) {
@@ -70,6 +72,7 @@ public class TripsAdapter extends
 
             titleTextView = itemView.findViewById(R.id.trip_title);
             descriptionTextView = itemView.findViewById(R.id.trip_description);
+            priceTextView = itemView.findViewById(R.id.trip_price);
             imageView = itemView.findViewById(R.id.trip_picture);
         }
     }
