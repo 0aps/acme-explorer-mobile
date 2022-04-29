@@ -1,17 +1,29 @@
 package com.mis.acmeexplorer.trips;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask.TaskSnapshot;
 import com.mis.acmeexplorer.R;
 import com.mis.acmeexplorer.core.DatePickerFragment;
 
@@ -23,7 +35,9 @@ import java.util.UUID;
 
 public class AddTripActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int PICK_IMAGE = 1;
     final private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+    private ImageView mImageView;
     private EditText mTitleEditText;
     private EditText mDescriptionEditText;
     private EditText mPriceEditText;
@@ -31,12 +45,30 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     private EditText mEndDateEditText;
 
     private TripService tripService;
+    private Uri pictureFile;
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        Uri selectedImageUri = intent.getData();
+                        if (null != selectedImageUri) {
+                            pictureFile = selectedImageUri;
+                            mImageView.setImageURI(selectedImageUri);
+                        }
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
 
+        mImageView = findViewById(R.id.input_picture);
         mTitleEditText = findViewById(R.id.input_title);
         mDescriptionEditText = findViewById(R.id.input_description);
         mPriceEditText = findViewById(R.id.input_price);
@@ -46,7 +78,8 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         mStartDateEditText.setOnClickListener(this);
         mEndDateEditText.setOnClickListener(this);
 
-        tripService = new TripService(FirebaseFirestore.getInstance());
+        tripService = new TripService(FirebaseFirestore.getInstance(),
+                FirebaseStorage.getInstance());
     }
 
     @Override
@@ -60,6 +93,13 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
                 onDateFieldClicked(mEndDateEditText);
                 break;
         }
+    }
+
+    public void onSelectImage(View view) {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        activityResultLauncher.launch(Intent.createChooser(i, "Select Picture"));
     }
 
     public void onSaveTrip(View view) {
@@ -76,17 +116,36 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
 
-        tripService.addTrip(newTrip).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        if (!newTrip.isValid()) {
+            Toast.makeText(getApplicationContext(),
+                    "Please complete all input fields.",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference()
+                .child("images/" + pictureFile.getLastPathSegment());
+
+        storageRef.putFile(pictureFile).addOnSuccessListener(new OnSuccessListener<TaskSnapshot>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                setResult(RESULT_OK, null);
-                finish();
+            public void onSuccess(TaskSnapshot taskSnapshot) {
+                if (taskSnapshot.getMetadata() != null) {
+                    if (taskSnapshot.getMetadata().getReference() != null) {
+                        taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri downloadUrl) {
+                                newTrip.setPicture(downloadUrl.toString());
+                                addTrip(newTrip);
+                            }
+                        });
+                    }
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getApplicationContext(),
-                        "Error saving trip. Please verify. " + e.getMessage(),
+                        "Error uploading trip picture. Please verify. " + e.getMessage(),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -102,5 +161,22 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    private void addTrip(Trip newTrip) {
+        tripService.addTrip(newTrip).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                setResult(RESULT_OK, null);
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        "Error saving trip. Please verify. " + e.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

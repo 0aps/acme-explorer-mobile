@@ -9,6 +9,19 @@
     android:padding="16dp"
     tools:context=".trips.AddTripActivity">
 
+    <!-- Picture -->
+    <ImageView
+        android:id="@+id/input_picture"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:alpha="1.0"
+        android:clickable="true"
+        android:contentDescription="@string/picture_of_image"
+        android:focusable="true"
+        android:onClick="onSelectImage"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_image" />
+
     <!-- Title -->
     <EditText
         android:id="@+id/input_title"

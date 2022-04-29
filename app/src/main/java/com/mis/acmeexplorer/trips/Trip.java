@@ -117,4 +117,11 @@ public class Trip implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
+    public boolean isValid() {
+
+        return (title != null && !title.isEmpty()) &&
+                (description != null && !description.isEmpty()) &&
+                (price != 0) && (startDate != null) && (endDate != null);
+    }
 }

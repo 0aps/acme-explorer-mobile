@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 import com.mis.acmeexplorer.trips.AddTripActivity;
 import com.mis.acmeexplorer.trips.FilterDialogFragment;
 import com.mis.acmeexplorer.trips.Filters;
@@ -69,7 +70,7 @@ public class HomeActivity extends AppCompatActivity implements
         setNavigation();
 
         mFilterDialog = new FilterDialogFragment();
-        tripService = new TripService(FirebaseFirestore.getInstance());
+        tripService = new TripService(FirebaseFirestore.getInstance(), null);
         loadTrips(null);
     }
 

@@ -1,19 +1,26 @@
 package com.mis.acmeexplorer.trips;
 
+import android.net.Uri;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import javax.annotation.Nullable;
 
 public class TripService {
 
     final private FirebaseFirestore db;
+    final private FirebaseStorage storage;
 
-    public TripService(FirebaseFirestore db) {
+    public TripService(FirebaseFirestore db, FirebaseStorage storage) {
         this.db = db;
+        this.storage = storage;
     }
 
     public Task<QuerySnapshot> loadTrips(@Nullable Filters filters) {
@@ -48,5 +55,11 @@ public class TripService {
     public Task<Void> deleteTrip(Trip trip) {
         return db.collection("trips").document(trip.getId())
                 .delete();
+    }
+
+    public UploadTask addTripPicture(Uri pictureFile) {
+        StorageReference storageRef = storage.getReference()
+                .child("images/" + pictureFile.getLastPathSegment());
+        return storageRef.putFile(pictureFile);
     }
 }
