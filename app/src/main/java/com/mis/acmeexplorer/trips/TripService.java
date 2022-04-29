@@ -44,4 +44,9 @@ public class TripService {
     public Task<DocumentReference> addTrip(Trip newTrip) {
         return db.collection("trips").add(newTrip);
     }
+
+    public Task<Void> deleteTrip(Trip trip) {
+        return db.collection("trips").document(trip.getId())
+                .delete();
+    }
 }

@@ -1,10 +1,15 @@
 package com.mis.acmeexplorer.trips;
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Locale;
 
 public class Trip implements Serializable {
+
+    @DocumentId
+    private String id;
 
     private String ticker;
 
@@ -12,7 +17,7 @@ public class Trip implements Serializable {
 
     private String title;
 
-    private String state;
+    private String state = "active";
 
     private String picture;
 
@@ -103,5 +108,13 @@ public class Trip implements Serializable {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

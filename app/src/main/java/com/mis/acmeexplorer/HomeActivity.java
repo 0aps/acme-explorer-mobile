@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +47,8 @@ public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
     private TripService tripService;
     private FilterDialogFragment mFilterDialog;
+    private RecyclerView rvTrips;
+    private TripsAdapter tripAdapter;
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -140,6 +143,7 @@ public class HomeActivity extends AppCompatActivity implements
             public void onSuccess(QuerySnapshot documentSnapshots) {
                 List<Trip> types = documentSnapshots.toObjects(Trip.class);
                 displayTrips(new ArrayList<>(types));
+                setDismissibleRecycle();
                 showMessage(types.size() + " trips loaded successfully");
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -151,15 +155,15 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     private void displayTrips(ArrayList<Trip> trips) {
-        RecyclerView rvContacts = findViewById(R.id.rv_trips);
-        TripsAdapter adapter = new TripsAdapter(trips, new TripsAdapter.OnItemClickListener() {
+        rvTrips = findViewById(R.id.rv_trips);
+        tripAdapter = new TripsAdapter(trips, new TripsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Trip trip) {
                 onTripClicked(trip);
             }
         });
-        rvContacts.setAdapter(adapter);
-        rvContacts.setLayoutManager(new LinearLayoutManager(this));
+        rvTrips.setAdapter(tripAdapter);
+        rvTrips.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void onTripClicked(Trip trip) {
@@ -185,6 +189,25 @@ public class HomeActivity extends AppCompatActivity implements
                 drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+    }
+
+    private void setDismissibleRecycle() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Trip trip = tripAdapter.getItem(position);
+
+                tripAdapter.removeItem(position);
+                tripAdapter.notifyItemRemoved(position);
+                tripService.deleteTrip(trip);
+            }
+        }).attachToRecyclerView(rvTrips);
     }
 
 }

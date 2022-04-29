@@ -61,6 +61,14 @@ public class TripsAdapter extends
         return trips.size();
     }
 
+    public Trip getItem(int position) {
+        return trips.get(position);
+    }
+
+    public void removeItem(int position) {
+        trips.remove(position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView descriptionTextView;
