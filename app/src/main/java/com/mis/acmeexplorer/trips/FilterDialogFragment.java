@@ -145,14 +145,14 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         return mTitleEditText.getText().toString();
     }
 
-    private int getSelectedMinPrice() {
+    private double getSelectedMinPrice() {
         final String value = mMinPriceEditText.getText().toString();
-        return value.isEmpty() ? 0 : Integer.parseInt(value);
+        return value.isEmpty() ? 0.00 : Float.parseFloat(value);
     }
 
-    private int getSelectedMaxPrice() {
+    private double getSelectedMaxPrice() {
         final String value = mMaxPriceEditText.getText().toString();
-        return value.isEmpty() ? 0 : Integer.parseInt(value);
+        return value.isEmpty() ? 0.00 : Float.parseFloat(value);
     }
 
     private Date getSelectedMinDate() throws ParseException {

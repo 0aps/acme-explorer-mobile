@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,7 +34,6 @@ import java.util.UUID;
 
 public class AddTripActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final int PICK_IMAGE = 1;
     final private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
     private ImageView mImageView;
     private EditText mTitleEditText;
@@ -43,6 +41,8 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     private EditText mPriceEditText;
     private EditText mStartDateEditText;
     private EditText mEndDateEditText;
+    private EditText mLatitudeEditText;
+    private EditText mLongitudeEditText;
 
     private TripService tripService;
     private Uri pictureFile;
@@ -74,6 +74,8 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         mPriceEditText = findViewById(R.id.input_price);
         mStartDateEditText = findViewById(R.id.trip_start_date);
         mEndDateEditText = findViewById(R.id.trip_end_date);
+        mLatitudeEditText = findViewById(R.id.input_latitude);
+        mLongitudeEditText = findViewById(R.id.input_longitude);
 
         mStartDateEditText.setOnClickListener(this);
         mEndDateEditText.setOnClickListener(this);
@@ -105,10 +107,14 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     public void onSaveTrip(View view) {
         Trip newTrip = new Trip();
         String price = mPriceEditText.getText().toString();
+        String latitude = mLatitudeEditText.getText().toString();
+        String longitude = mLongitudeEditText.getText().toString();
         newTrip.setTicker(UUID.randomUUID().toString());
         newTrip.setTitle(mTitleEditText.getText().toString());
         newTrip.setDescription(mDescriptionEditText.getText().toString());
-        newTrip.setPrice(price.isEmpty() ? 0 : Integer.parseInt(price));
+        newTrip.setPrice(price.isEmpty() ? 0 : Float.parseFloat(price));
+        newTrip.setLatitude(latitude.isEmpty() ? 0 : Float.parseFloat(latitude));
+        newTrip.setLongitude(longitude.isEmpty() ? 0 : Float.parseFloat(longitude));
         try {
             newTrip.setStartDate(formatter.parse(mStartDateEditText.getText().toString()));
             newTrip.setEndDate(formatter.parse(mEndDateEditText.getText().toString()));

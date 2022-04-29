@@ -9,8 +9,8 @@ public class Filters {
     private String title = null;
     private Date minDate = null;
     private Date maxDate = null;
-    private int minPrice = -1;
-    private int maxPrice = -1;
+    private double minPrice = -1;
+    private double maxPrice = -1;
 
     public Filters() {
     }
@@ -31,11 +31,11 @@ public class Filters {
         return (minPrice > 0);
     }
 
-    public int getMinPrice() {
+    public double getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(int minPrice) {
+    public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
 
@@ -43,11 +43,11 @@ public class Filters {
         return (maxPrice > 0);
     }
 
-    public int getMaxPrice() {
+    public double getMaxPrice() {
         return maxPrice;
     }
 
-    public void setMaxPrice(int maxPrice) {
+    public void setMaxPrice(double maxPrice) {
         this.maxPrice = maxPrice;
     }
 

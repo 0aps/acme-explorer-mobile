@@ -27,11 +27,16 @@ public class Trip implements Serializable {
 
     private Date endDate;
 
+    // Sevilla default location
+    private double latitude = 37.377197;
+
+    private double longitude = -5.986893;
+
     public Trip() {
     }
 
     public Trip(String ticker, String description, String title, String state, String picture, double price,
-                Date startDate, Date endDate) {
+                Date startDate, Date endDate, double latitude, double longitude) {
         this.ticker = ticker;
         this.description = description;
         this.title = title;
@@ -40,6 +45,8 @@ public class Trip implements Serializable {
         this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getTicker() {
@@ -118,10 +125,28 @@ public class Trip implements Serializable {
         this.id = id;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     public boolean isValid() {
 
         return (title != null && !title.isEmpty()) &&
                 (description != null && !description.isEmpty()) &&
-                (price != 0) && (startDate != null) && (endDate != null);
+                (price != 0) && (startDate != null) && (endDate != null) &&
+                (latitude != 0) && (longitude != 0);
     }
+
 }

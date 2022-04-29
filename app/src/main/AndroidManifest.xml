@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AcmeExplorer">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
         <activity
             android:name=".trips.AddTripActivity"
             android:exported="false"
@@ -22,7 +28,12 @@
         </activity>
         <activity
             android:name=".maps.MapActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".trips.AddTripActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".trips.AddTripActivity" />
+        </activity>
         <activity
             android:name=".trips.TripActivity"
             android:exported="false"

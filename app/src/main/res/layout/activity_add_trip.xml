@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/price"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <!-- Start Date -->
     <EditText
@@ -72,6 +72,24 @@
         android:hint="@string/end_date"
         android:inputType="date"
         android:maxLines="1" />
+
+    <!-- Latitude -->
+    <EditText
+        android:id="@+id/input_latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/latitude"
+        android:inputType="numberSigned|numberDecimal" />
+
+    <!-- Longitude -->
+    <EditText
+        android:id="@+id/input_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/longitude"
+        android:inputType="numberSigned|numberDecimal" />
 
     <!-- Floating Action -->
     <RelativeLayout

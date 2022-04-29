@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".trips.TripActivity">
 
     <ImageView
@@ -84,7 +85,6 @@
             android:layout_marginTop="10dp"
             android:textSize="18sp" />
 
-
         <TextView
             android:id="@+id/trip_startDate_header"
             android:layout_width="wrap_content"
@@ -115,6 +115,47 @@
             android:layout_marginTop="10dp"
             android:textSize="18sp" />
 
+        <TextView
+            android:id="@+id/trip_latitude_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/latitude"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/trip_latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/trip_longitude_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/longitude"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/trip_longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp" />
     </GridLayout>
+
+    <!-- Floating Action -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_view_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="end|bottom"
+        android:contentDescription="@string/action_view_map"
+        android:onClick="viewTripMap"
+        android:src="@android:drawable/ic_dialog_map" />
 
 </RelativeLayout>

@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mis.acmeexplorer.HomeActivity;
 import com.mis.acmeexplorer.R;
+import com.mis.acmeexplorer.maps.MapActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -33,6 +36,8 @@ public class TripActivity extends AppCompatActivity {
         TextView priceTextView = findViewById(R.id.trip_price);
         TextView startDateTextView = findViewById(R.id.trip_startDate);
         TextView endDateTextView = findViewById(R.id.trip_endDate);
+        TextView longitudeTextView = findViewById(R.id.trip_longitude);
+        TextView latitudeTextView = findViewById(R.id.trip_latitude);
         ImageView imageView = findViewById(R.id.trip_picture);
 
         tickerTextView.setText(trip.getTicker());
@@ -41,6 +46,17 @@ public class TripActivity extends AppCompatActivity {
         priceTextView.setText(trip.getPriceString());
         startDateTextView.setText(formatter.format(trip.getStartDate()));
         endDateTextView.setText(formatter.format(trip.getEndDate()));
+        longitudeTextView.setText(Double.toString(trip.getLongitude()));
+        latitudeTextView.setText(Double.toString(trip.getLatitude()));
         Picasso.get().load(trip.getPicture()).into(imageView);
+    }
+
+    public void viewTripMap(View view) {
+        Intent intent = getIntent();
+        Trip trip = (Trip) intent.getSerializableExtra("trip");
+
+        Intent mapIntent = new Intent(this, MapActivity.class);
+        mapIntent.putExtra("trip", trip);
+        startActivity(mapIntent);
     }
 }
