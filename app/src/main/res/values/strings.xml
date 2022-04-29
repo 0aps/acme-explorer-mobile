@@ -15,6 +15,7 @@
     <string name="price">Price</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+    <string name="current_ip">Current IP</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="nav_open">Open</string>
